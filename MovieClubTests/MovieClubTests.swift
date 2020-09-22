@@ -20,8 +20,11 @@ class MovieClubTests: XCTestCase {
     }
 
     func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        let movie1 = Movie(title: "bad boys", id: 0, vote_average: 2, original_language: "en", release_date: "", poster_path: "", overview: "")
+        let movie2 = Movie(title: "good boys", id: 0, vote_average: 2, original_language: "en", release_date: "", poster_path: "", overview: "")
+        let result = SearchUtility.getSearches(searchString: "boys bad", baseValues: [movie1,movie2])
+        assert(result.count == 1)
+        assert(result[0].title == movie1.title)
     }
 
     func testPerformanceExample() {

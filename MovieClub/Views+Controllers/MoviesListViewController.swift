@@ -24,6 +24,9 @@ final class MoviesListViewController: UIViewController, UITableViewDataSource, U
         tableView.delegate = self
         tableView.dataSource = self
         searchBar.delegate = self
+        
+        let clearSearchButton = UIBarButtonItem(title: "Clear Search", style: .plain, target: self, action: #selector(clearSearch))
+        self.navigationItem.setLeftBarButton(clearSearchButton, animated: true)
 
         NetworkManager.shared.getNowPlaying {[weak self] (result) in
             DispatchQueue.main.async {
@@ -33,6 +36,12 @@ final class MoviesListViewController: UIViewController, UITableViewDataSource, U
         }
         
         self.navigationItem.title = "Movie Club"
+    }
+    @objc func clearSearch () {
+        tableMode = .all
+        tableView.reloadData()
+        searchBar.resignFirstResponder()
+        searchBar.text = ""
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -62,16 +71,19 @@ final class MoviesListViewController: UIViewController, UITableViewDataSource, U
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
         let dataSource = getDataSource()
-        let posterPath = dataSource[indexPath.row].poster_path
+        let posterPath = dataSource[indexPath.row].poster_path ?? ""
         cell.textLabel?.text = dataSource[indexPath.row].title
         cell.detailTextLabel?.text = "Rating: " +  dataSource[indexPath.row].vote_average.description
         if imageCache[posterPath] == nil {
             cell.imageView?.image = UIImage(named: "poster")
             cell.imageView?.contentMode = .scaleAspectFit
-            NetworkManager.shared.getMovieImage(path: dataSource[indexPath.row].poster_path) {[weak self] (image) in
+            guard let posterPath = dataSource[indexPath.row].poster_path else {
+                return cell
+            }
+            NetworkManager.shared.getMovieImage(path: posterPath) {[weak self] (image) in
                 
                 DispatchQueue.main.async {
-                    self?.imageCache[dataSource[indexPath.row].poster_path] = image
+                    self?.imageCache[posterPath] = image
                     if tableView.hasRowAtIndexPath(indexPath: (indexPath as NSIndexPath) as IndexPath) {
                         self?.tableView.reloadRows(at: [indexPath], with: .automatic)
                     }
@@ -80,7 +92,7 @@ final class MoviesListViewController: UIViewController, UITableViewDataSource, U
             }
             
         } else {
-            cell.imageView?.image = imageCache[dataSource[indexPath.row].poster_path]
+            cell.imageView?.image = imageCache[dataSource[indexPath.row].poster_path ?? ""]
         }
         
         return cell
@@ -91,7 +103,7 @@ final class MoviesListViewController: UIViewController, UITableViewDataSource, U
          case .all:
              return "Movies playing now. swipe right on cell to book"
          case .search:
-             return "searches found = \(tableSearchData.count). Tap search on empty text to go back"
+             return "searches found = \(tableSearchData.count)."
          case .recent:
              return ""
          }
