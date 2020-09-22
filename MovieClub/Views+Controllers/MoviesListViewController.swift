@@ -15,7 +15,15 @@ final class MoviesListViewController: UIViewController, UITableViewDataSource, U
     private var tableMode: TableMode = .all
     private var tableSearchData: [Movie] = []
     private var tablePlayingNowData: [Movie] = []
-    private var tableRecentSearches: [Movie] = []
+    private var tableRecentSearches: [Movie] = [] {
+        didSet {
+            if tableRecentSearches.count > 4 {
+                let _ = tableRecentSearches.popLast()
+            }
+        }
+    }
+    
+    
     private var imageCache: [String: UIImage] = [:]
     
     override func viewDidLoad() {
@@ -74,6 +82,7 @@ final class MoviesListViewController: UIViewController, UITableViewDataSource, U
         let posterPath = dataSource[indexPath.row].poster_path ?? ""
         cell.textLabel?.text = dataSource[indexPath.row].title
         cell.detailTextLabel?.text = "Rating: " +  dataSource[indexPath.row].vote_average.description
+        cell.accessoryType = .disclosureIndicator
         if imageCache[posterPath] == nil {
             cell.imageView?.image = UIImage(named: "poster")
             cell.imageView?.contentMode = .scaleAspectFit
@@ -105,7 +114,7 @@ final class MoviesListViewController: UIViewController, UITableViewDataSource, U
          case .search:
              return "searches found = \(tableSearchData.count)."
          case .recent:
-             return ""
+             return "Recent Searches:"
          }
 
     }
@@ -114,6 +123,9 @@ final class MoviesListViewController: UIViewController, UITableViewDataSource, U
         let dataSource = getDataSource()
         let detailVC = self.storyboard?.instantiateViewController(identifier: "detail") as! MovieDetailsViewController
         detailVC.movieId = dataSource[indexPath.row].id.description
+        if tableMode == .search {
+            tableRecentSearches.insert(dataSource[indexPath.row], at: 0)
+        }
         self.navigationController?.pushViewController(detailVC, animated: true)
     }
     
@@ -126,6 +138,7 @@ final class MoviesListViewController: UIViewController, UITableViewDataSource, U
         let configuration = UISwipeActionsConfiguration(actions: [bookAction])
         return configuration
     }
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
         if searchBar.text?.isEmpty ?? true {
@@ -139,6 +152,7 @@ final class MoviesListViewController: UIViewController, UITableViewDataSource, U
         tableMode = .all
         tableView.reloadData()
     }
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBar.text?.isEmpty ?? true {
             tableMode = .recent
@@ -149,8 +163,16 @@ final class MoviesListViewController: UIViewController, UITableViewDataSource, U
 
         tableView.reloadData()
     }
-
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        if tableMode == .all {
+            searchBar.text = ""
+            tableMode = .recent
+            tableView.reloadData()
+        }
+    }
 }
+
 enum TableMode {
     case all
     case search

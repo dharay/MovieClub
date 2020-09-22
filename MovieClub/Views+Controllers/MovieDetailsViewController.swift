@@ -146,8 +146,7 @@ class MovieDetailsViewController: UIViewController {
             
         stackView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.contentSize = stackView.frame.size
-
-        
+ 
     }
 
 }
