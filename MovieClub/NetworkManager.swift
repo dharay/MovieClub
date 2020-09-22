@@ -30,9 +30,9 @@ class NetworkManager {
     private let apiKeyV3 = "e961b288500e4b7ba8af8cbba1da736f"
     private let apiKeyV4 = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlOTYxYjI4ODUwMGU0YjdiYThhZjhjYmJhMWRhNzM2ZiIsInN1YiI6IjU3Zjc2Y2FkOTI1MTQxMjU1NTAwMGY3OCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ZMZlYjwQCwOGwItT7yiWscqNYhCDz96gsWTWZj1fBl0"
     
-    func getNowPlaying(closure: @escaping (_ result: [NowPlaying]) -> ()) {
+    func getNowPlaying(closure: @escaping (_ result: [Movie]) -> ()) {
         var nowPlayingURL = URLComponents(url: baseURL, resolvingAgainstBaseURL: true)
-        var result: [NowPlaying] = []
+        var result: [Movie] = []
 
         nowPlayingURL?.path = "/3/movie/now_playing"
         nowPlayingURL?.queryItems = [URLQueryItem(name: "api_key", value: apiKeyV3)]
@@ -88,10 +88,10 @@ class NetworkManager {
 }
 
 struct NowPlayingResponse: Codable {
-    var results: [NowPlaying]
+    var results: [Movie]
 }
 
-struct NowPlaying: Codable {
+struct Movie: Codable {
     let title: String
     let vote_average: Float
     let original_language: String

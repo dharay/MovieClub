@@ -13,8 +13,8 @@ final class MoviesListViewController: UIViewController, UITableViewDataSource, U
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     private var tableSearchMode = false
-    private var tableSearchData: [String] = []
-    private var tablePlayingNowData: [NowPlaying] = []
+    private var tableSearchData: [Movie] = []
+    private var tablePlayingNowData: [Movie] = []
     private var imageCache: [String: UIImage] = [:]
     
     override func viewDidLoad() {
@@ -38,22 +38,26 @@ final class MoviesListViewController: UIViewController, UITableViewDataSource, U
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
-        
-        cell.textLabel?.text = tablePlayingNowData[indexPath.row].title
-        cell.detailTextLabel?.text = "Rating: " +  tablePlayingNowData[indexPath.row].vote_average.description
-        if imageCache[tablePlayingNowData[indexPath.row].poster_path] == nil {
+        let dataSource = tableSearchMode ? tableSearchData : tablePlayingNowData
+        let posterPath = dataSource[indexPath.row].poster_path
+        cell.textLabel?.text = dataSource[indexPath.row].title
+        cell.detailTextLabel?.text = "Rating: " +  dataSource[indexPath.row].vote_average.description
+        if imageCache[posterPath] == nil {
             cell.imageView?.image = UIImage(named: "poster")
             cell.imageView?.contentMode = .scaleAspectFit
-            NetworkManager.shared.getMovieImage(path: tablePlayingNowData[indexPath.row].poster_path) {[weak self] (image) in
-                self?.imageCache[self?.tablePlayingNowData[indexPath.row].poster_path ?? "default"] = image
+            NetworkManager.shared.getMovieImage(path: dataSource[indexPath.row].poster_path) {[weak self] (image) in
+                
                 DispatchQueue.main.async {
-                    self?.tableView.reloadRows(at: [indexPath], with: .automatic)
+                    self?.imageCache[dataSource[indexPath.row].poster_path] = image
+                    if tableView.hasRowAtIndexPath(indexPath: (indexPath as NSIndexPath) as IndexPath) {
+                        self?.tableView.reloadRows(at: [indexPath], with: .automatic)
+                    }
                 }
                 
             }
             
         } else {
-            cell.imageView?.image = imageCache[tablePlayingNowData[indexPath.row].poster_path]
+            cell.imageView?.image = imageCache[dataSource[indexPath.row].poster_path]
         }
         
         return cell
@@ -65,8 +69,34 @@ final class MoviesListViewController: UIViewController, UITableViewDataSource, U
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
+        if searchBar.text?.isEmpty ?? true {
+            self.tableSearchMode = false
+            tableView.reloadData()
+        }
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        self.tableSearchMode = false
+        tableView.reloadData()
+    }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard !searchText.isEmpty else {return}
+        
+        self.tableSearchData = SearchUtility.getSearches(searchString: searchText, baseValues: tablePlayingNowData)
+        tableSearchMode = true
+        tableView.reloadData()
+    }
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        tableSearchMode = true
     }
     
 }
 
 
+extension UITableView {
+
+    func hasRowAtIndexPath(indexPath: IndexPath) -> Bool {
+        return indexPath.section < self.numberOfSections && indexPath.row < self.numberOfRows(inSection: indexPath.section)
+    }
+}
