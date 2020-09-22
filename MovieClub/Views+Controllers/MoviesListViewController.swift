@@ -12,9 +12,10 @@ final class MoviesListViewController: UIViewController, UITableViewDataSource, U
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
-    private var tableSearchMode = false
+    private var tableMode: TableMode = .all
     private var tableSearchData: [Movie] = []
     private var tablePlayingNowData: [Movie] = []
+    private var tableRecentSearches: [Movie] = []
     private var imageCache: [String: UIImage] = [:]
     
     override func viewDidLoad() {
@@ -23,22 +24,44 @@ final class MoviesListViewController: UIViewController, UITableViewDataSource, U
         tableView.delegate = self
         tableView.dataSource = self
         searchBar.delegate = self
-        
+
         NetworkManager.shared.getNowPlaying {[weak self] (result) in
             DispatchQueue.main.async {
                 self?.tablePlayingNowData = result
                 self?.tableView.reloadData()
             }
         }
+        
+        self.navigationItem.title = "Movie Club"
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableSearchMode ? tableSearchData.count : tablePlayingNowData.count
+        switch tableMode {
+        case .all:
+            return tablePlayingNowData.count
+        case .search:
+            return tableSearchData.count
+        case .recent:
+            return tableRecentSearches.count
+        }
+      
     }
+    
+    private func getDataSource() -> [Movie] {
+        switch tableMode {
+         case .all:
+             return tablePlayingNowData
+         case .search:
+             return tableSearchData
+         case .recent:
+             return tableRecentSearches
+         }
+    }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
-        let dataSource = tableSearchMode ? tableSearchData : tablePlayingNowData
+        let dataSource = getDataSource()
         let posterPath = dataSource[indexPath.row].poster_path
         cell.textLabel?.text = dataSource[indexPath.row].title
         cell.detailTextLabel?.text = "Rating: " +  dataSource[indexPath.row].vote_average.description
@@ -64,35 +87,62 @@ final class MoviesListViewController: UIViewController, UITableViewDataSource, U
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return self.tableSearchMode ? "searches found = \(tableSearchData.count)":"Movies playing now. swipe right on cell to book"
+        switch tableMode {
+         case .all:
+             return "Movies playing now. swipe right on cell to book"
+         case .search:
+             return "searches found = \(tableSearchData.count). Tap search on empty text to go back"
+         case .recent:
+             return ""
+         }
+
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let dataSource = getDataSource()
+        let detailVC = self.storyboard?.instantiateViewController(identifier: "detail") as! MovieDetailsViewController
+        self.navigationController?.pushViewController(detailVC, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let bookAction = UIContextualAction(style: .destructive, title: "Book") { (action, view, handler) in
+            let alert = UIUtility.getBookedAlert()
+            self.present(alert, animated: true, completion: nil)
+        }
+        bookAction.backgroundColor = .green
+        let configuration = UISwipeActionsConfiguration(actions: [bookAction])
+        return configuration
+    }
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
         if searchBar.text?.isEmpty ?? true {
-            self.tableSearchMode = false
+            tableMode = .all
             tableView.reloadData()
         }
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
-        self.tableSearchMode = false
+        tableMode = .all
         tableView.reloadData()
     }
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        guard !searchText.isEmpty else {return}
-        
-        self.tableSearchData = SearchUtility.getSearches(searchString: searchText, baseValues: tablePlayingNowData)
-        tableSearchMode = true
+        if searchBar.text?.isEmpty ?? true {
+            tableMode = .recent
+        } else {
+            tableMode = .search
+            tableSearchData = SearchUtility.getSearches(searchString: searchText, baseValues: tablePlayingNowData)
+        }
+
         tableView.reloadData()
     }
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        tableSearchMode = true
-    }
-    
-}
 
+}
+enum TableMode {
+    case all
+    case search
+    case recent
+}
 
 extension UITableView {
 

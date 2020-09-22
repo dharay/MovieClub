@@ -17,7 +17,7 @@
 		B53E5ADE2519BFC700F10783 /* MovieClubUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E5ADD2519BFC700F10783 /* MovieClubUITests.swift */; };
 		B53E5AEC2519CB7500F10783 /* MovieDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E5AEB2519CB7500F10783 /* MovieDetailsViewController.swift */; };
 		B53E5AEF2519CC1400F10783 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E5AEE2519CC1400F10783 /* NetworkManager.swift */; };
-		B53E5AF1251A264F00F10783 /* SearchUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E5AF0251A264F00F10783 /* SearchUtility.swift */; };
+		B53E5AF1251A264F00F10783 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E5AF0251A264F00F10783 /* Utility.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,7 +54,7 @@
 		B53E5ADF2519BFC700F10783 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B53E5AEB2519CB7500F10783 /* MovieDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewController.swift; sourceTree = "<group>"; };
 		B53E5AEE2519CC1400F10783 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
-		B53E5AF0251A264F00F10783 /* SearchUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUtility.swift; sourceTree = "<group>"; };
+		B53E5AF0251A264F00F10783 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,7 +112,7 @@
 				B53E5AC62519BFC600F10783 /* LaunchScreen.storyboard */,
 				B53E5AC92519BFC600F10783 /* Info.plist */,
 				B53E5AEE2519CC1400F10783 /* NetworkManager.swift */,
-				B53E5AF0251A264F00F10783 /* SearchUtility.swift */,
+				B53E5AF0251A264F00F10783 /* Utility.swift */,
 			);
 			path = MovieClub;
 			sourceTree = "<group>";
@@ -278,7 +278,7 @@
 			files = (
 				B53E5AEC2519CB7500F10783 /* MovieDetailsViewController.swift in Sources */,
 				B53E5AC02519BFC600F10783 /* MoviesListViewController.swift in Sources */,
-				B53E5AF1251A264F00F10783 /* SearchUtility.swift in Sources */,
+				B53E5AF1251A264F00F10783 /* Utility.swift in Sources */,
 				B53E5AEF2519CC1400F10783 /* NetworkManager.swift in Sources */,
 				B53E5ABC2519BFC600F10783 /* AppDelegate.swift in Sources */,
 				B53E5ABE2519BFC600F10783 /* SceneDelegate.swift in Sources */,

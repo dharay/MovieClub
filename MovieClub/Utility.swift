@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct SearchUtility {
     static func getSearches(searchString: String, baseValues: [Movie]) -> [Movie] {
@@ -53,5 +54,15 @@ struct SearchUtility {
         }
 
         return finalValues
+    }
+}
+
+
+struct UIUtility {
+    static func getBookedAlert() -> UIAlertController {
+        let alert = UIAlertController(title: "Tickets Booked!", message: "Yay!", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(okAction)
+        return alert
     }
 }
