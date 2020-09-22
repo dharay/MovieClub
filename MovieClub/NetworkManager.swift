@@ -197,6 +197,7 @@ class NetworkManager {
 
 }
 
+//TODO: put these in their own files
 struct NowPlayingResponse: Codable {
     var results: [Movie]
 }
