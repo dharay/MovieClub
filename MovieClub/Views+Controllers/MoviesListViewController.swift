@@ -101,6 +101,7 @@ final class MoviesListViewController: UIViewController, UITableViewDataSource, U
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let dataSource = getDataSource()
         let detailVC = self.storyboard?.instantiateViewController(identifier: "detail") as! MovieDetailsViewController
+        detailVC.movieId = dataSource[indexPath.row].id.description
         self.navigationController?.pushViewController(detailVC, animated: true)
     }
     
