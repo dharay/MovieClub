@@ -9,12 +9,14 @@
 /* Begin PBXBuildFile section */
 		B53E5ABC2519BFC600F10783 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E5ABB2519BFC600F10783 /* AppDelegate.swift */; };
 		B53E5ABE2519BFC600F10783 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E5ABD2519BFC600F10783 /* SceneDelegate.swift */; };
-		B53E5AC02519BFC600F10783 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E5ABF2519BFC600F10783 /* ViewController.swift */; };
+		B53E5AC02519BFC600F10783 /* MoviesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E5ABF2519BFC600F10783 /* MoviesListViewController.swift */; };
 		B53E5AC32519BFC600F10783 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B53E5AC12519BFC600F10783 /* Main.storyboard */; };
 		B53E5AC52519BFC600F10783 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B53E5AC42519BFC600F10783 /* Assets.xcassets */; };
 		B53E5AC82519BFC600F10783 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B53E5AC62519BFC600F10783 /* LaunchScreen.storyboard */; };
 		B53E5AD32519BFC700F10783 /* MovieClubTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E5AD22519BFC700F10783 /* MovieClubTests.swift */; };
 		B53E5ADE2519BFC700F10783 /* MovieClubUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E5ADD2519BFC700F10783 /* MovieClubUITests.swift */; };
+		B53E5AEC2519CB7500F10783 /* MovieDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E5AEB2519CB7500F10783 /* MovieDetailsViewController.swift */; };
+		B53E5AEF2519CC1400F10783 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E5AEE2519CC1400F10783 /* NetworkManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +40,7 @@
 		B53E5AB82519BFC600F10783 /* MovieClub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieClub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B53E5ABB2519BFC600F10783 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B53E5ABD2519BFC600F10783 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		B53E5ABF2519BFC600F10783 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B53E5ABF2519BFC600F10783 /* MoviesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesListViewController.swift; sourceTree = "<group>"; };
 		B53E5AC22519BFC600F10783 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B53E5AC42519BFC600F10783 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B53E5AC72519BFC600F10783 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -49,6 +51,8 @@
 		B53E5AD92519BFC700F10783 /* MovieClubUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MovieClubUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B53E5ADD2519BFC700F10783 /* MovieClubUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieClubUITests.swift; sourceTree = "<group>"; };
 		B53E5ADF2519BFC700F10783 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B53E5AEB2519CB7500F10783 /* MovieDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewController.swift; sourceTree = "<group>"; };
+		B53E5AEE2519CC1400F10783 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,11 +105,11 @@
 			children = (
 				B53E5ABB2519BFC600F10783 /* AppDelegate.swift */,
 				B53E5ABD2519BFC600F10783 /* SceneDelegate.swift */,
-				B53E5ABF2519BFC600F10783 /* ViewController.swift */,
-				B53E5AC12519BFC600F10783 /* Main.storyboard */,
+				B53E5AED2519CB8500F10783 /* Views+Controllers */,
 				B53E5AC42519BFC600F10783 /* Assets.xcassets */,
 				B53E5AC62519BFC600F10783 /* LaunchScreen.storyboard */,
 				B53E5AC92519BFC600F10783 /* Info.plist */,
+				B53E5AEE2519CC1400F10783 /* NetworkManager.swift */,
 			);
 			path = MovieClub;
 			sourceTree = "<group>";
@@ -126,6 +130,16 @@
 				B53E5ADF2519BFC700F10783 /* Info.plist */,
 			);
 			path = MovieClubUITests;
+			sourceTree = "<group>";
+		};
+		B53E5AED2519CB8500F10783 /* Views+Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				B53E5ABF2519BFC600F10783 /* MoviesListViewController.swift */,
+				B53E5AC12519BFC600F10783 /* Main.storyboard */,
+				B53E5AEB2519CB7500F10783 /* MovieDetailsViewController.swift */,
+			);
+			path = "Views+Controllers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,7 +273,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B53E5AC02519BFC600F10783 /* ViewController.swift in Sources */,
+				B53E5AEC2519CB7500F10783 /* MovieDetailsViewController.swift in Sources */,
+				B53E5AC02519BFC600F10783 /* MoviesListViewController.swift in Sources */,
+				B53E5AEF2519CC1400F10783 /* NetworkManager.swift in Sources */,
 				B53E5ABC2519BFC600F10783 /* AppDelegate.swift in Sources */,
 				B53E5ABE2519BFC600F10783 /* SceneDelegate.swift in Sources */,
 			);
